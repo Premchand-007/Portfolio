@@ -17,7 +17,6 @@ function Layout() {
     <>
       {/* Fixed background — locked in place, only content scrolls */}
       <div className="bg-fixed-wrapper">
-        <img src={bg} alt="" className="bg-image" />
         <div className="bg-overlay" />
       </div>
 
