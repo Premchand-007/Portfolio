@@ -1,0 +1,126 @@
+.home { min-height: 100vh; }
+
+/* ── Shared section wrapper ──────────────────────────────── */
+.section {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+.section-title {
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  color: var(--text-primary);
+  margin-bottom: 28px;
+}
+
+/* ── Hero ────────────────────────────────────────────────── */
+.hero {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 100px 24px 50px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.hero-slogan {
+  flex: 0 0 auto;
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 0 80px 20px rgba(255, 255, 255, 0.12),
+              0 0 160px 40px rgba(255, 255, 255, 0.06);
+}
+
+.hero-slogan::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.10) 0%,
+    rgba(255, 255, 255, 0.04) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.hero-slogan p {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.hero-card {
+  flex: 1;
+  padding: 36px 32px;
+}
+
+@media (max-width: 700px) {
+  .hero {
+    flex-direction: column;
+  }
+  .hero-slogan p {
+    font-size: 1.6rem;
+  }
+}
+
+.hero-tag-row     { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.hero-title       { font-size: clamp(2.2rem, 6vw, 3.6rem); color: var(--text-primary); margin-bottom: 18px; }
+.accent-text      { color: var(--accent); text-shadow: 0 0 32px var(--accent-glow); }
+.hero-sub         { font-size: 1.05rem; max-width: 520px; margin-bottom: 34px; }
+.hero-actions     { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* ── Skills ──────────────────────────────────────────────── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+}
+.skill-card       { padding: 24px 22px; }
+.skill-category   {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
+}
+.skill-list       { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.skill-item       { display: flex; align-items: center; gap: 8px; font-size: 0.875rem; color: var(--text-secondary); }
+.skill-dot        { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; opacity: 0.7; }
+
+/* ── Experience ──────────────────────────────────────────── */
+.exp-list         { display: flex; flex-direction: column; gap: 14px; }
+.exp-card         { padding: 28px 32px; }
+.exp-header       { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; gap: 12px; flex-wrap: wrap; }
+.exp-role         { font-size: 1.1rem; color: var(--text-primary); margin-bottom: 3px; }
+.exp-org          { font-size: 0.82rem; color: var(--text-muted); }
+.exp-highlights   { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.exp-highlights li {
+  font-size: 0.875rem; color: var(--text-secondary);
+  padding-left: 18px; position: relative; line-height: 1.55;
+}
+.exp-highlights li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.75rem; top: 3px; }
+
+/* ── Education ───────────────────────────────────────────── */
+.edu-section      { padding-bottom: 80px; }
+.edu-card         { padding: 32px 36px; }
+.edu-inner        { display: flex; gap: 48px; flex-wrap: wrap; }
+.edu-degree       { font-size: 1.15rem; margin-top: 8px; margin-bottom: 4px; }
+.edu-school       { font-size: 0.83rem; color: var(--text-muted); }
+.edu-certs        { flex: 1; min-width: 200px; }
+.edu-cert-label   { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.edu-certs ul     { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.edu-certs li     { font-size: 0.875rem; color: var(--text-secondary); padding-left: 14px; position: relative; }
+.edu-certs li::before { content: '·'; position: absolute; left: 4px; color: var(--accent); }
+
+@media (max-width: 640px) {
+  .hero-card { padding: 32px 22px; }
+  .exp-card  { padding: 22px 18px; }
+  .edu-card  { padding: 24px 20px; }
+}
