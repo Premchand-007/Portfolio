@@ -150,16 +150,16 @@ export default function Home() {
               <span className="tag" style={{ marginBottom: 10, display: 'inline-block' }}>
                 Degree
               </span>
-              <h3 className="edu-degree">B.Tech — Computer Science</h3>
-              <p className="edu-school">Your University Name &nbsp;·&nbsp; 2022 – 2026</p>
+              <h3 className="edu-degree">Integrated M.Tech — Computer Science(Cyber Security)</h3>
+              <p className="edu-school">VIT Bhopal University&nbsp;·&nbsp; 3rd year Student</p>
             </div>
             <div className="edu-certs">
               <p className="edu-cert-label">Certifications &amp; Platforms</p>
               <ul>
                 {/* CHANGE: replace with your actual certs */}
-                <li>eJPT / CEH (add yours)</li>
-                <li>TryHackMe — Top X%</li>
-                <li>HackTheBox — Active</li>
+                <li>Ethical Hacker by Cisco Networking Academy</li>
+                <li>Networking Basics by Cisco Networking Academy</li>
+                <li>API Penetration Testing (12 hours) by APIsec University</li>
                 <li>picoCTF — Active</li>
               </ul>
             </div>
