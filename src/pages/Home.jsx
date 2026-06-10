@@ -147,11 +147,27 @@ export default function Home() {
         <motion.div className="glass-card edu-card" {...fadeUp(0.15)}>
           <div className="edu-inner">
             <div>
-              <span className="tag" style={{ marginBottom: 10, display: 'inline-block' }}>
+              <span className="tag" style={{ marginBottom: 6, display: 'inline-block' }}>
                 Degree
               </span>
               <h3 className="edu-degree">Integrated M.Tech — Computer Science(Cyber Security)</h3>
               <p className="edu-school">VIT Bhopal University&nbsp;·&nbsp; 3rd year Student</p>
+
+              {/* Intermediate */}
+
+              <span className="tag" style={{ marginBottom: 6,  marginTop: 14, display: 'inline-block' }}> 
+                Intermediate
+              </span>
+              <h3 className="edu-degree">Sri Chaitanya Junior College</h3>
+              <p className="edu-school">Intermediate&nbsp;·&nbsp; 2024</p>
+
+              {/* School */}
+
+              <span className="tag" style={{ marginBottom: 6,  marginTop: 14, display: 'inline-block' }}>
+                School
+              </span>
+              <h3 className="edu-degree">kendriya Vidyalaya No.1 Uppal</h3>
+              <p className="edu-school">CBSE&nbsp;·&nbsp; 2022</p>
             </div>
             <div className="edu-certs">
               <p className="edu-cert-label">Certifications &amp; Platforms</p>
