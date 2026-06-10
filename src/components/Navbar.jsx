@@ -5,7 +5,6 @@ import './Navbar.css'
 const links = [
   { to: '/',         label: 'Home'     },
   { to: '/writeups', label: 'Writeups' },
-  { to: '/blog',     label: 'Blog'     },
   { to: '/about',    label: 'About'    },
 ]
 
@@ -44,8 +43,8 @@ export default function Navbar() {
         </ul>
 
         {/* ── CTA ── CHANGE: update href to your actual email */}
-        <a href="kundepremchand@gmail.com" className="navbar-cta">
-          Hire Me
+        <a href="mailto:kundepremchand@gmail.com" className="navbar-cta">
+          Connect with Me
         </a>
 
       </div>

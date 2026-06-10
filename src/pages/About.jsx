@@ -22,8 +22,9 @@ export default function About() {
 
         <motion.div className="glass-card about-bio-card" {...fadeUp(0.1)}>
           <div className="about-avatar-row">
-            {/* CHANGE: replace the initials div with an <img> tag pointing to your photo */}
-            <div className="about-avatar">KP</div>
+            <div className="about-avatar">
+              <img src="/favicon.svg" alt="cosmic09 logo" />
+            </div>
             <div>
               {/* CHANGE: your real name or handle */}
               <h1 className="about-name">KUNDE PREMCHAND</h1>
@@ -44,7 +45,7 @@ export default function About() {
           </p>
 
           {/* CHANGE: your real email */}
-          <a href="kundepremchand@gmail.com" className="btn-primary about-cta">
+          <a href="mailto:kundepremchand@gmail.com" className="btn-primary about-cta">
             Get in touch
           </a>
         </motion.div>
