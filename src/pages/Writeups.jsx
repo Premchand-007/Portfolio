@@ -18,7 +18,7 @@ const writeups = [
     owasp:    'API1:2023',
     summary:  'Brand/Creator users could access admin-only endpoints by manipulating the URL path with no additional authentication required, achieving full privilege escalation.',
     tags:     ['Broken Access Control', 'Auth Bypass', 'API'],
-    date:     'Dec 2024',
+    date:     'Mar 2026',
   },
   {
     id: 2,
@@ -29,7 +29,7 @@ const writeups = [
     owasp:    'API3:2023',
     summary:  'Creator discovery endpoint returned sensitive internal fields beyond what the UI required — exposing email hashes, internal IDs, and metadata not intended for public consumption.',
     tags:     ['Data Exposure', 'API', 'OWASP'],
-    date:     'Jan 2025',
+    date:     'Mar 2026',
   },
   {
     id: 3,
@@ -40,7 +40,7 @@ const writeups = [
     owasp:    'API1:2023',
     summary:  'Insecure direct object reference on profile image storage paths. Assessed as Low/Informational given the public nature of profile images, with recommendation to audit higher-impact storage paths.',
     tags:     ['IDOR', 'Storage', 'Recon'],
-    date:     'Jan 2025',
+    date:     'Mar 2026',
   },
 ]
 
