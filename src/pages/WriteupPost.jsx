@@ -2,23 +2,54 @@ import { useMemo } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import ReactMarkdown from 'react-markdown'
-import matter from 'gray-matter'
-import './BlogPost.css'
+import './WriteupPost.css'
 
-const rawFiles = import.meta.glob('../content/blogs/*.md', {
+const difficultyBadge = {
+  Critical: 'badge-critical',
+  High:     'badge-high',
+  Medium:   'badge-medium',
+  Low:      'badge-low',
+  Easy:     'badge-low',
+  Hard:     'badge-high',
+  Insane:   'badge-critical',
+}
+
+// Lightweight frontmatter parser — no Node.js Buffer needed
+function parseFrontmatter(raw) {
+  const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/)
+  if (!match) return { data: {}, content: raw }
+  const yaml = match[1]
+  const data = {}
+  yaml.split('\n').forEach(line => {
+    const colonIdx = line.indexOf(':')
+    if (colonIdx === -1) return
+    const key = line.slice(0, colonIdx).trim()
+    let val = line.slice(colonIdx + 1).trim()
+    if ((val.startsWith('"') && val.endsWith('"')) ||
+        (val.startsWith("'") && val.endsWith("'"))) {
+      val = val.slice(1, -1)
+    }
+    if (val.startsWith('[') && val.endsWith(']')) {
+      data[key] = val
+        .slice(1, -1)
+        .split(',')
+        .map(s => s.trim().replace(/^["']|["']$/g, ''))
+        .filter(Boolean)
+    } else {
+      data[key] = val
+    }
+  })
+  const content = raw.slice(match[0].length).trim()
+  return { data, content }
+}
+
+const rawFiles = import.meta.glob('../content/writeups/*.md', {
   eager: true,
   query: '?raw',
   import: 'default',
 })
 
-const difficultyBadge = {
-  Easy:   'badge-low',
-  Medium: 'badge-medium',
-  Hard:   'badge-high',
-  Insane: 'badge-critical',
-}
-
-export default function BlogPost() {
+export default function WriteupPost() {
   const { slug } = useParams()
   const navigate = useNavigate()
 
@@ -27,7 +58,7 @@ export default function BlogPost() {
       filepath.endsWith(`${slug}.md`)
     )
     if (!entry) return null
-    const { data: frontmatter, content } = matter(entry[1])
+    const { data: frontmatter, content } = parseFrontmatter(entry[1])
     return { frontmatter, content }
   }, [slug])
 
@@ -41,9 +72,9 @@ export default function BlogPost() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h2>Post not found</h2>
-            <p>No post matching <code>{slug}</code>.</p>
-            <Link to="/blog" className="btn-back">← Back to Blog</Link>
+            <h2>Writeup not found</h2>
+            <p>No writeup matching <code>{slug}</code>.</p>
+            <Link to="/writeups" className="btn-back">← Back to Writeups</Link>
           </motion.div>
         </div>
       </div>
@@ -76,6 +107,9 @@ export default function BlogPost() {
                 <span className={`tag ${difficultyBadge[frontmatter.difficulty] || 'badge-info'}`}>
                   {frontmatter.difficulty}
                 </span>
+              )}
+              {frontmatter.platform && (
+                <span className="post-platform">{frontmatter.platform}</span>
               )}
               {frontmatter.date && (
                 <span className="post-date">
@@ -126,7 +160,7 @@ export default function BlogPost() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <Link to="/blog" className="btn-back">← All posts</Link>
+          <Link to="/writeups" className="btn-back">← All Writeups</Link>
         </motion.div>
 
       </div>
