@@ -7,7 +7,7 @@
   max-width: 920px;
   margin-left: auto;
   margin-right: auto;
-  z-index: 100;
+  z-index: 1000;
   border-radius: 16px;
 }
 
@@ -32,24 +32,53 @@
 .navbar-logo:hover { color: var(--accent); }
 .logo-bracket { color: var(--accent); font-weight: 400; }
 
-/* Links */
+/* Links container — needs position:relative for the pill */
 .navbar-links {
   display: flex;
   list-style: none;
   gap: 2px;
+  position: relative;
+}
+
+/* Sliding pill background */
+.nav-hover-pill {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 32px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.09);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .nav-link {
   display: block;
+  position: relative;
+  z-index: 1;
   padding: 6px 15px;
   border-radius: 10px;
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--text-secondary);
-  transition: color 0.2s, background 0.2s;
+  transition: color 0.2s;
+  white-space: nowrap;
 }
-.nav-link:hover         { color: var(--text-primary); background: rgba(255,255,255,0.07); }
-.nav-link--active       { color: var(--text-primary); background: rgba(255,255,255,0.10); }
+.nav-link:hover      { color: var(--text-primary); }
+.nav-link--active    { color: var(--text-primary); }
+
+/* Active underline dot */
+.nav-link--active::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
 
 /* CTA */
 .navbar-cta {

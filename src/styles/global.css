@@ -2,17 +2,16 @@
 
 /* ── CSS Variables ───────────────────────────────────────── */
 :root {
-  --glass-bg:       rgba(255, 255, 255, 0.08);
+  --glass-bg:       rgba(255, 255, 255, 0.06);
   --glass-bg-hover: rgba(255, 255, 255, 0.10);
-  --glass-border:   rgba(255, 255, 255, 0.28);
-  --glass-shadow:   0 8px 40px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.15);
-  --glass-blur:     blur(8px) saturate(135%);
+  --glass-border:   rgba(255, 255, 255, 0.22);
+  --glass-shadow:   0 8px 40px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.12);
+  --glass-blur:     blur(12px) saturate(150%);
 
   --text-primary:   rgba(255, 255, 255, 0.95);
   --text-secondary: rgba(255, 255, 255, 0.65);
   --text-muted:     rgba(255, 255, 255, 0.38);
 
-  /* ⬇ CHANGE THIS to swap your accent color globally */
   --accent:         #7dd3fc;
   --accent-glow:    rgba(125, 211, 252, 0.25);
 
@@ -31,28 +30,26 @@ body {
   overflow-x: hidden;
 }
 
-/* ── Fixed background ────────────────────────────────────── */
+/* ── Background — dark with top-center spotlight, no image ─ */
 .bg-fixed-wrapper {
   position: fixed;
-  inset: -5px;  /* slight bleed to prevent gaps on scroll */
+  inset: 0;
   z-index: -1;
-  background-image: url('/bg.jpg');  /* path relative to /public */
-  background-size: cover;
-  background-position: center;
+  background-color: #0d0d12;
+  /* top spotlight matching the ReactBits reference */
+  background-image:
+    radial-gradient(ellipse 70% 45% at 50% -5%, rgba(110, 130, 180, 0.28) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 50% 0%,  rgba(150, 170, 220, 0.14) 0%, transparent 60%);
 }
 
 .bg-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.25) 0%,
-    rgba(0,0,0,0.10) 50%,
-    rgba(0,0,0,0.30) 100%
-  );
+  /* subtle vignette on edges */
+  background: radial-gradient(ellipse 120% 100% at 50% 50%, transparent 55%, rgba(0,0,0,0.45) 100%);
 }
 
-/* ── Main content sits above fixed bg ───────────────────── */
+/* ── Main content ────────────────────────────────────────── */
 .main-content {
   position: relative;
   z-index: 1;
@@ -62,36 +59,62 @@ body {
 /* ── Glass card ──────────────────────────────────────────── */
 .glass-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(8px) saturate(135%) !important;
-  -webkit-backdrop-filter: blur(8px) saturate(135%) !important;
+  backdrop-filter: blur(12px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(150%) !important;
   border: 1px solid var(--glass-border);
   border-radius: 20px;
   box-shadow: var(--glass-shadow);
-  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
-  overflow: hidden;
-  /* top shine line */
   position: relative;
+  overflow: hidden;
+  transition:
+    background    0.25s ease,
+    box-shadow    0.25s ease,
+    transform     0.3s  cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color  0.25s ease;
 }
+
+/* top shine line */
 .glass-card::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 1px;
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255,255,255,0.75) 30%,
-    rgba(255,255,255,0.75) 70%,
+    rgba(255,255,255,0.6) 30%,
+    rgba(255,255,255,0.6) 70%,
     transparent 100%
   );
   z-index: 1;
+  transition: opacity 0.25s ease;
 }
+
+/* accent glow that blooms on hover */
+.glass-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(125,211,252,0.08) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .glass-card:hover {
   background: var(--glass-bg-hover);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.20);
-  transform: translateY(-6px) scale(1.01);
+  border-color: rgba(255, 255, 255, 0.32);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(125, 211, 252, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transform: translateY(-8px) scale(1.015);
+}
+
+.glass-card:hover::after {
+  opacity: 1;
 }
 
 /* ── Typography ──────────────────────────────────────────── */
@@ -100,7 +123,6 @@ h1, h2, h3, h4 {
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.02em;
-
 }
 p { line-height: 1.7; color: var(--text-secondary); }
 a { color: inherit; text-decoration: none; }
@@ -119,7 +141,7 @@ a { color: inherit; text-decoration: none; }
   color: var(--accent);
 }
 
-/* ── Severity badge variants ─────────────────────────────── */
+/* ── Severity badges ─────────────────────────────────────── */
 .badge-critical { background:rgba(239,68,68,0.15);  border-color:rgba(239,68,68,0.40);  color:#fca5a5; }
 .badge-high     { background:rgba(249,115,22,0.15); border-color:rgba(249,115,22,0.40); color:#fdba74; }
 .badge-medium   { background:rgba(234,179,8,0.15);  border-color:rgba(234,179,8,0.40);  color:#fde047; }
@@ -184,6 +206,12 @@ a { color: inherit; text-decoration: none; }
 
 /* ── Scrollbar ───────────────────────────────────────────── */
 ::-webkit-scrollbar              { width: 4px; }
-::-webkit-scrollbar-track        { background: black; }
-::-webkit-scrollbar-thumb        { background: rgba(255,255,255,0.15); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover  { background: rgba(255,255,255,0.25); } 
+::-webkit-scrollbar-track        { background: #0d0d12; }
+::-webkit-scrollbar-thumb        { background: rgba(255,255,255,0.12); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover  { background: rgba(255,255,255,0.22); }
+
+/* ── Respect reduced motion ──────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .glass-card { transition: background 0.2s, box-shadow 0.2s; }
+  .glass-card:hover { transform: none; }
+}
