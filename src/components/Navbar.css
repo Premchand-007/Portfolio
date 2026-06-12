@@ -9,9 +9,24 @@
   margin-right: auto;
   z-index: 1000;
   border-radius: 16px;
+  /* slightly darker base so the tracer pops */
+  background: rgba(10, 12, 22, 0.72) !important;
+}
+
+/* Canvas sits flush over the navbar, pointer-events off so clicks pass through */
+.navbar-tracer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .navbar-inner {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -32,7 +47,7 @@
 .navbar-logo:hover { color: var(--accent); }
 .logo-bracket { color: var(--accent); font-weight: 400; }
 
-/* Links container — needs position:relative for the pill */
+/* Links */
 .navbar-links {
   display: flex;
   list-style: none;
@@ -40,14 +55,13 @@
   position: relative;
 }
 
-/* Sliding pill background */
 .nav-hover-pill {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   height: 32px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.08);
   pointer-events: none;
   z-index: 0;
 }
@@ -64,10 +78,9 @@
   transition: color 0.2s;
   white-space: nowrap;
 }
-.nav-link:hover      { color: var(--text-primary); }
-.nav-link--active    { color: var(--text-primary); }
+.nav-link:hover   { color: var(--text-primary); }
+.nav-link--active { color: var(--text-primary); }
 
-/* Active underline dot */
 .nav-link--active::after {
   content: '';
   position: absolute;

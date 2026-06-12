@@ -10,52 +10,135 @@ const links = [
 ]
 
 export default function Navbar() {
-  const [hoveredIdx, setHoveredIdx]     = useState(null)
+  const [hoveredIdx, setHoveredIdx]         = useState(null)
   const [indicatorStyle, setIndicatorStyle] = useState({})
-  const [hidden, setHidden]             = useState(false)
-  const lastY = useRef(0)
+  const [hidden, setHidden]                 = useState(false)
+  const lastY   = useRef(0)
   const listRef = useRef(null)
+  const canvasRef = useRef(null)
+  const animRef   = useRef(null)
 
+  /* ── hide/show on scroll ── */
   const { scrollY } = useScroll()
-
   useMotionValueEvent(scrollY, 'change', (y) => {
     const diff = y - lastY.current
-    if (y < 60) {
-      // always show near the top
-      setHidden(false)
-    } else if (diff > 6) {
-      // scrolling down — hide
-      setHidden(true)
-    } else if (diff < -6) {
-      // scrolling up — show
-      setHidden(false)
-    }
+    if (y < 60)        setHidden(false)
+    else if (diff >  6) setHidden(true)
+    else if (diff < -6) setHidden(false)
     lastY.current = y
   })
 
+  /* ── border tracer canvas ── */
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+
+    let t = 0          // progress 0..1 along the perimeter
+    let dpr = window.devicePixelRatio || 1
+
+    const resize = () => {
+      const rect = canvas.parentElement.getBoundingClientRect()
+      canvas.width  = rect.width  * dpr
+      canvas.height = rect.height * dpr
+      canvas.style.width  = rect.width  + 'px'
+      canvas.style.height = rect.height + 'px'
+      ctx.scale(dpr, dpr)
+    }
+    resize()
+    window.addEventListener('resize', resize)
+
+    // Build the rounded-rect path as a list of points
+    const getPoint = (progress, w, h, r) => {
+      // perimeter segments: top, right, bottom, left (with rounded corners skipped for simplicity)
+      const perim = 2 * (w + h)
+      const d = progress * perim
+      if (d < w)                           return { x: r + d,     y: 0 }
+      if (d < w + h)                       return { x: w,         y: d - w }
+      if (d < 2 * w + h)                   return { x: w - (d - w - h), y: h }
+      return                                      { x: 0,         y: h - (d - 2*w - h) }
+    }
+
+    const TAIL = 0.09   // tail length as fraction of perimeter
+    const SPEED = 0.0018
+
+    const draw = () => {
+      const W = canvas.width  / dpr
+      const H = canvas.height / dpr
+      const R = 16
+
+      ctx.clearRect(0, 0, W, H)
+
+      // draw tail — fading gradient trail
+      const steps = 60
+      for (let i = 0; i < steps; i++) {
+        const frac = i / steps
+        const tp   = ((t - TAIL * frac + 1) % 1)
+        const p    = getPoint(tp, W, H, R)
+        const alpha = frac * 0.7
+        const size  = 1.5 + frac * 2.5
+
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, size, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(100, 180, 255, ${alpha})`
+        ctx.fill()
+      }
+
+      // head — bright bloom dot
+      const head = getPoint(t, W, H, R)
+
+      // outer glow
+      const glow = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, 18)
+      glow.addColorStop(0,   'rgba(140, 200, 255, 0.55)')
+      glow.addColorStop(0.4, 'rgba(100, 140, 255, 0.25)')
+      glow.addColorStop(1,   'rgba(80,  100, 255, 0)')
+      ctx.beginPath()
+      ctx.arc(head.x, head.y, 18, 0, Math.PI * 2)
+      ctx.fillStyle = glow
+      ctx.fill()
+
+      // core dot
+      ctx.beginPath()
+      ctx.arc(head.x, head.y, 3, 0, Math.PI * 2)
+      ctx.fillStyle = '#c0e8ff'
+      ctx.shadowColor = '#7dd3fc'
+      ctx.shadowBlur  = 12
+      ctx.fill()
+      ctx.shadowBlur = 0
+
+      t = (t + SPEED) % 1
+      animRef.current = requestAnimationFrame(draw)
+    }
+
+    animRef.current = requestAnimationFrame(draw)
+    return () => {
+      cancelAnimationFrame(animRef.current)
+      window.removeEventListener('resize', resize)
+    }
+  }, [])
+
+  /* ── pill hover ── */
   const handleMouseEnter = (e, idx) => {
     setHoveredIdx(idx)
-    const li = e.currentTarget
+    const li   = e.currentTarget
     const list = listRef.current
-    const listRect = list.getBoundingClientRect()
-    const liRect   = li.getBoundingClientRect()
-    setIndicatorStyle({ width: liRect.width, left: liRect.left - listRect.left })
+    const lr   = list.getBoundingClientRect()
+    const li_r = li.getBoundingClientRect()
+    setIndicatorStyle({ width: li_r.width, left: li_r.left - lr.left })
   }
-
   const handleMouseLeave = () => setHoveredIdx(null)
 
   return (
     <motion.nav
       className="navbar glass-card"
       initial={{ y: -80, opacity: 0 }}
-      animate={{
-        y:       hidden ? -80 : 0,
-        opacity: hidden ? 0  : 1,
-      }}
+      animate={{ y: hidden ? -80 : 0, opacity: hidden ? 0 : 1 }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
     >
-      <div className="navbar-inner">
+      {/* tracer canvas — sits behind all content */}
+      <canvas ref={canvasRef} className="navbar-tracer" />
 
+      <div className="navbar-inner">
         <NavLink to="/" className="navbar-logo">
           <span className="logo-bracket">&lt;</span>
           COSMIC
@@ -72,7 +155,6 @@ export default function Navbar() {
               transition={{ type: 'spring', stiffness: 400, damping: 30 }}
             />
           )}
-
           {links.map(({ to, label }, idx) => (
             <li key={to} onMouseEnter={(e) => handleMouseEnter(e, idx)}>
               <NavLink
@@ -91,7 +173,6 @@ export default function Navbar() {
         <a href="mailto:kundepremchand@gmail.com" className="navbar-cta">
           Connect with Me
         </a>
-
       </div>
     </motion.nav>
   )
