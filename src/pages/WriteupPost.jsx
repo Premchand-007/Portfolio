@@ -147,6 +147,12 @@ export default function WriteupPost() {
                 a:          ({ href, children }) => (
                               <a href={href} target="_blank" rel="noreferrer" className="md-link">{children}</a>
                             ),
+                img:        ({ src, alt }) => (
+                              <span className="md-img-wrapper">
+                                <img src={src} alt={alt} className="md-img" />
+                                {alt && <span className="md-img-caption">{alt}</span>}
+                              </span>
+                            ),
               }}
             >
               {content}
