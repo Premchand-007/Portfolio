@@ -1,5 +1,5 @@
 ---
-title: "n0s4n1ty 1 Pico CTF"
+title: "n0s4n1ty 1 PicoCTF"
 date: "2026-06-16"
 tags: ["PicoCTF", "Cylab", "Web-explotation", "file-upload"]
 difficulty: "Easy"
