@@ -48,15 +48,66 @@ export default function Navbar() {
     resize()
     window.addEventListener('resize', resize)
 
-    // Build the rounded-rect path as a list of points
+    // Build the rounded-rect path as a list of points, including corner arcs
     const getPoint = (progress, w, h, r) => {
-      // perimeter segments: top, right, bottom, left (with rounded corners skipped for simplicity)
-      const perim = 2 * (w + h)
-      const d = progress * perim
-      if (d < w)                           return { x: r + d,     y: 0 }
-      if (d < w + h)                       return { x: w,         y: d - w }
-      if (d < 2 * w + h)                   return { x: w - (d - w - h), y: h }
-      return                                      { x: 0,         y: h - (d - 2*w - h) }
+      // straight segment lengths (corners eat 2r off each edge)
+      const topLen    = w - 2 * r
+      const rightLen  = h - 2 * r
+      const bottomLen = w - 2 * r
+      const leftLen   = h - 2 * r
+      const arcLen    = (Math.PI * r) / 2   // quarter circle
+
+      const perim = topLen + arcLen + rightLen + arcLen + bottomLen + arcLen + leftLen + arcLen
+      let d = progress * perim
+
+      // top edge (left → right)
+      if (d < topLen) {
+        return { x: r + d, y: 0 }
+      }
+      d -= topLen
+
+      // top-right corner arc (center: w-r, r)
+      if (d < arcLen) {
+        const a = (d / arcLen) * (Math.PI / 2) - Math.PI / 2
+        return { x: w - r + r * Math.cos(a), y: r + r * Math.sin(a) }
+      }
+      d -= arcLen
+
+      // right edge (top → bottom)
+      if (d < rightLen) {
+        return { x: w, y: r + d }
+      }
+      d -= rightLen
+
+      // bottom-right corner arc (center: w-r, h-r)
+      if (d < arcLen) {
+        const a = (d / arcLen) * (Math.PI / 2)
+        return { x: w - r + r * Math.cos(a), y: h - r + r * Math.sin(a) }
+      }
+      d -= arcLen
+
+      // bottom edge (right → left)
+      if (d < bottomLen) {
+        return { x: w - r - d, y: h }
+      }
+      d -= bottomLen
+
+      // bottom-left corner arc (center: r, h-r)
+      if (d < arcLen) {
+        const a = (d / arcLen) * (Math.PI / 2) + Math.PI / 2
+        return { x: r + r * Math.cos(a), y: h - r + r * Math.sin(a) }
+      }
+      d -= arcLen
+
+      // left edge (bottom → top)
+      if (d < leftLen) {
+        return { x: 0, y: h - r - d }
+      }
+      d -= leftLen
+
+      // top-left corner arc (center: r, r)
+      const a = (d / arcLen) * (Math.PI / 2) + Math.PI
+      return { x: r + r * Math.cos(a), y: r + r * Math.sin(a) }
     }
 
     const TAIL = 0.09   // tail length as fraction of perimeter

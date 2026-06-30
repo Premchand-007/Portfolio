@@ -1,4 +1,34 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+/* ── DM Serif Display — headings ─────────────────────────── */
+@font-face {
+  font-family: 'DM Serif Display';
+  src: url('/src/assets/fonts/DMSerifDisplay-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'DM Serif Display';
+  src: url('/src/assets/fonts/DMSerifDisplay-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ── Bodoni Moda — body text (variable font) ─────────────── */
+@font-face {
+  font-family: 'Bodoni Moda';
+  src: url('/src/assets/fonts/BodoniModa-VariableFont_opsz_wght.ttf') format('truetype-variations');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bodoni Moda';
+  src: url('/src/assets/fonts/BodoniModa-Italic-VariableFont_opsz_wght.ttf') format('truetype-variations');
+  font-weight: 400 900;
+  font-style: italic;
+  font-display: swap;
+}
 
 /* ── CSS Variables ───────────────────────────────────────── */
 :root {
@@ -16,8 +46,8 @@
   --accent-glow:    rgba(125, 211, 252, 0.25);
 
   --nav-height:     64px;
-  --font-display:   'Syne', sans-serif;
-  --font-body:      'DM Sans', sans-serif;
+  --font-display:   'DM Serif Display', serif;
+  --font-body:      'Bodoni Moda', serif;
 }
 
 /* ── Reset ───────────────────────────────────────────────── */
@@ -36,7 +66,6 @@ body {
   inset: 0;
   z-index: -1;
   background-color: #0d0d12;
-  /* top spotlight matching the ReactBits reference */
   background-image:
     radial-gradient(ellipse 70% 45% at 50% -5%, rgba(110, 130, 180, 0.28) 0%, transparent 70%),
     radial-gradient(ellipse 40% 30% at 50% 0%,  rgba(150, 170, 220, 0.14) 0%, transparent 60%);
@@ -45,7 +74,6 @@ body {
 .bg-overlay {
   position: absolute;
   inset: 0;
-  /* subtle vignette on edges */
   background: radial-gradient(ellipse 120% 100% at 50% 50%, transparent 55%, rgba(0,0,0,0.45) 100%);
 }
 
@@ -73,7 +101,6 @@ body {
     border-color  0.25s ease;
 }
 
-/* top shine line */
 .glass-card::before {
   content: '';
   position: absolute;
@@ -90,7 +117,6 @@ body {
   transition: opacity 0.25s ease;
 }
 
-/* accent glow that blooms on hover */
 .glass-card::after {
   content: '';
   position: absolute;
@@ -120,9 +146,9 @@ body {
 /* ── Typography ──────────────────────────────────────────── */
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.15;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 p { line-height: 1.7; color: var(--text-secondary); }
 a { color: inherit; text-decoration: none; }
@@ -154,8 +180,8 @@ a { color: inherit; text-decoration: none; }
   padding: 12px 28px;
   border-radius: 12px;
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.9rem;
+  font-weight: 400;
+  font-size: 0.95rem;
   background: rgba(125,211,252,0.18);
   border: 1px solid rgba(125,211,252,0.40);
   color: var(--accent);
@@ -173,8 +199,8 @@ a { color: inherit; text-decoration: none; }
   padding: 12px 28px;
   border-radius: 12px;
   font-family: var(--font-display);
-  font-weight: 500;
-  font-size: 0.9rem;
+  font-weight: 400;
+  font-size: 0.95rem;
   background: rgba(255,255,255,0.05);
   border: 1px solid var(--glass-border);
   color: var(--text-secondary);
